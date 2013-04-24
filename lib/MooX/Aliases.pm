@@ -90,10 +90,55 @@ MooX::Aliases - easy aliasing of methods and attributes in Moo
   package MyClass;
   use Moo;
   use MooX::Aliases;
+  
+  has this => (
+      is    => 'rw',
+      alias => 'that',
+  );
+  
+  sub foo { my $self = shift; print $self->that }
+  alias bar => 'foo';
+  
+  my $o = MyApp->new();
+  $o->this('Hello World');
+  $o->bar; # prints 'Hello World' 
+
+or
+
+  package MyRole;
+  use Moo::Role;
+  use MooX::Aliases;
+  
+  has this => (
+      is    => 'rw',
+      alias => 'that',
+  );
+  
+  sub foo { my $self = shift; print $self->that }
+  alias bar => 'foo';
 
 =head1 DESCRIPTION
 
+The MooX::Aliases module will allow you to quickly alias methods
+in Moo. It provides an alias parameter for has() to generate aliased
+accessors as well as the standard ones. Attributes can also be
+initialized in the constructor via their aliased names.
 
+You can create more than one alias at once by passing a listref:
+
+  has ip_addr => (
+    alias => [ qw(ipAddr ip) ],
+  );
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item alias $alias, $method
+
+Creates $alias as a method that is aliased to $method.
+
+=back
 
 =head1 SEE ALSO
 
