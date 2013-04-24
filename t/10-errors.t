@@ -7,8 +7,8 @@ use Test::Fatal;
     use Moo;
     use MooX::Aliases;
 
-#    ::like( ::exception { alias foo => 'bar' }, qr/^Cannot find method bar to alias/,
-#        "aliasing a non-existent method gives an appropriate error");
+    ::like( ::exception { alias foo => 'bar' }, qr/^Cannot find method bar to alias/,
+        "aliasing a non-existent method gives an appropriate error");
 
     has foo => (
         is    => 'ro',

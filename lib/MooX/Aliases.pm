@@ -16,13 +16,17 @@ sub import {
 
   my $make_alias = sub {
     my ($from, $to) = @_;
+    if (!$target->can($to)) {
+      croak "Cannot find method $to to alias";
+    }
+
     no strict 'refs';
     *{"${target}::${from}"} = sub {
       goto $_[0]->can($to);
     };
   };
 
-  my %aliases;
+  my %init_args;
   install_modifier $target, 'around', 'has', sub {
     my $orig = shift;
     my ($attr, %opts) = @_;
@@ -30,15 +34,14 @@ sub import {
       unless $opts{alias};
 
     my @aliases = ref $opts{alias} ? @{$opts{alias}} : $opts{alias};
-    for my $alias (@aliases) {
-      $make_alias->($alias => $attr);
-    }
 
     my $name = defined $opts{init_arg} ? $opts{init_arg} : $attr;
+    my @names = @aliases;
     if (!exists $opts{init_arg} || defined $opts{init_arg}) {
-      unshift @aliases, $name;
+      unshift @names, $name;
     }
-    $aliases{$name} = \@aliases;
+    $init_args{$name} = \@names;
+
 
     $opts{handle_moose} ||= [];
     push @{ $opts{handle_moose} }, sub {
@@ -48,14 +51,18 @@ sub import {
     push @{ $opts{traits} }, 'MooseX::Aliases::Meta::Trait::Attribute';
 
     $orig->($attr, %opts);
+
+    for my $alias (@aliases) {
+      $make_alias->($alias => $attr);
+    }
   };
 
   $around->('BUILDARGS', sub {
     my $orig = shift;
     my $self = shift;
     my $args = $self->$orig(@_);
-    for my $attr (keys %aliases) {
-      my @init = grep { exists $args->{$_} } (@{$aliases{$attr}});
+    for my $attr (keys %init_args) {
+      my @init = grep { exists $args->{$_} } (@{$init_args{$attr}});
       if (@init > 1) {
         croak "Conflicting init_args: (" . join(', ', @init) . ")";
       }
