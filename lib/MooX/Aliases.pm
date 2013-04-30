@@ -33,26 +33,20 @@ sub import {
     return
       unless $opts{alias};
 
-    my @aliases = ref $opts{alias} ? @{$opts{alias}} : $opts{alias};
+    my $aliases = delete $opts{alias};
+    $aliases = [ $aliases ]
+      if !ref $aliases;
 
     my $name = defined $opts{init_arg} ? $opts{init_arg} : $attr;
-    my @names = @aliases;
+    my @names = @$aliases;
     if (!exists $opts{init_arg} || defined $opts{init_arg}) {
       unshift @names, $name;
     }
     $init_args{$name} = \@names;
 
-
-    $opts{handle_moose} ||= [];
-    push @{ $opts{handle_moose} }, sub {
-      require MooseX::Aliases;
-    };
-    $opts{traits} ||= [];
-    push @{ $opts{traits} }, 'MooseX::Aliases::Meta::Trait::Attribute';
-
     $orig->($attr, %opts);
 
-    for my $alias (@aliases) {
+    for my $alias (@$aliases) {
       $make_alias->($alias => $attr);
     }
   };
