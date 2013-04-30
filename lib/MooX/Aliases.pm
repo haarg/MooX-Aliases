@@ -1,7 +1,7 @@
 package MooX::Aliases;
 use strictures 1;
 
-our $VERSION = '0.000001';
+our $VERSION = '0.001000';
 $VERSION = eval $VERSION;
 
 use Carp;
