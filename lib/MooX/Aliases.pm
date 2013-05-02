@@ -148,7 +148,19 @@ haarg - Graham Knop (cpan:HAARG) <haarg@haarg.org>
 
 =head2 CONTRIBUTORS
 
-None so far.
+=over 8
+
+=item * Chris Prather <chris@prather.org>
+
+=item * Jesse Luehrs <doy@tozt.net>
+
+=item * Justin Hunter <justin.d.hunter@gmail.com>
+
+=item * Karen Etheridge <ether@cpan.org>
+
+=item * Yuval Kogman <nothingmuch@woobling.org>
+
+=back
 
 =head1 COPYRIGHT
 
