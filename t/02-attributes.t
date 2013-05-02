@@ -19,6 +19,10 @@ my ($foo_called, $baz_called);
         alias   => [qw/quux quuux/],
         trigger => sub { $baz_called++ },
     );
+
+    has wark => (
+        is      => 'rw',
+    );
 }
 
 ($foo_called, $baz_called) = (0, 0);
@@ -28,6 +32,7 @@ $t->bar(1);
 $t->baz(1);
 $t->quux(1);
 $t->quuux(1);
+$t->wark(1);
 is($foo_called, 2, 'all aliased methods were called from foo');
 is($baz_called, 3, 'all aliased methods were called from baz');
 

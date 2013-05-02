@@ -30,7 +30,8 @@ sub import {
   install_modifier $target, 'around', 'has', sub {
     my $orig = shift;
     my ($attr, %opts) = @_;
-    return
+
+    return $orig->($attr, %opts)
       unless $opts{alias};
 
     my $aliases = delete $opts{alias};
