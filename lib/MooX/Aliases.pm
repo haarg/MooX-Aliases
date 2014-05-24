@@ -26,15 +26,21 @@ sub import {
     };
   };
 
+  {
+    no strict 'refs';
+    *{"${target}::alias"} = $make_alias;
+  }
+
+  my $installed_buildargs;
   my %init_args;
   install_modifier $target, 'around', 'has', sub {
     my $orig = shift;
     my ($attr, %opts) = @_;
 
-    return $orig->($attr, %opts)
-      unless $opts{alias};
-
     my $aliases = delete $opts{alias};
+    return $orig->($attr, %opts)
+      unless $aliases;
+
     $aliases = [ $aliases ]
       if !ref $aliases;
 
@@ -45,31 +51,33 @@ sub import {
     }
     $init_args{$name} = \@names;
 
-    $orig->($attr, %opts);
+    my $out = $orig->($attr, %opts);
 
     for my $alias (@$aliases) {
       $make_alias->($alias => $attr);
     }
-  };
 
-  $around->('BUILDARGS', sub {
-    my $orig = shift;
-    my $self = shift;
-    my $args = $self->$orig(@_);
-    for my $attr (keys %init_args) {
-      my @init = grep { exists $args->{$_} } (@{$init_args{$attr}});
-      if (@init > 1) {
-        croak "Conflicting init_args: (" . join(', ', @init) . ")";
-      }
-      elsif (@init == 1) {
-        $args->{$attr} = delete $args->{$init[0]};
-      }
+    if (!$installed_buildargs) {
+      $installed_buildargs = 1;
+      $around->('BUILDARGS', sub {
+        my $orig = shift;
+        my $self = shift;
+        my $args = $self->$orig(@_);
+        for my $attr (keys %init_args) {
+          my @init = grep { exists $args->{$_} } (@{$init_args{$attr}});
+          if (@init > 1) {
+            croak "Conflicting init_args: (" . join(', ', @init) . ")";
+          }
+          elsif (@init == 1) {
+            $args->{$attr} = delete $args->{$init[0]};
+          }
+        }
+        return $args;
+      });
     }
-    return $args;
-  });
 
-  no strict 'refs';
-  *{"${target}::alias"} = $make_alias;
+    return $out;
+  };
 }
 
 1;
@@ -134,6 +142,11 @@ You can create more than one alias at once by passing a listref:
 Creates $alias as a method that is aliased to $method.
 
 =back
+
+=head1 CAVEATS
+
+This module uses the C<BUILDARGS> to map the attributes.  If a class uses a
+custom C<BUILDARGS>, this module may not behave properly.
 
 =head1 SEE ALSO
 
