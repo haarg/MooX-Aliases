@@ -93,15 +93,15 @@ MooX::Aliases - easy aliasing of methods and attributes in Moo
   package MyClass;
   use Moo;
   use MooX::Aliases;
-  
+
   has this => (
       is    => 'rw',
       alias => 'that',
   );
-  
+
   sub foo { my $self = shift; print $self->that }
   alias bar => 'foo';
-  
+
   my $o = MyApp->new();
   $o->this('Hello World');
   $o->bar; # prints 'Hello World' 
@@ -111,12 +111,12 @@ or
   package MyRole;
   use Moo::Role;
   use MooX::Aliases;
-  
+
   has this => (
       is    => 'rw',
       alias => 'that',
   );
-  
+
   sub foo { my $self = shift; print $self->that }
   alias bar => 'foo';
 
