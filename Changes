@@ -1,4 +1,6 @@
 Revision history for MooX::Aliases
 
+  - fix compatibility with namespace::clean
+
 0.001000 - 2013-05-02
   - initial release
