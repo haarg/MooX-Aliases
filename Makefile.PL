@@ -14,6 +14,7 @@ my %META = (
       'Moo' => 1.001000,
       'Class::Method::Modifiers' => 1.05,
       'strictures' => 1,
+      'perl' => 5.006,
     } },
     develop   => { requires => {
       'Moose' => 0,
