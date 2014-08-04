@@ -22,7 +22,7 @@ sub import {
 
     no strict 'refs';
     *{"${target}::${from}"} = sub {
-      goto $_[0]->can($to);
+      goto &{$_[0]->can($to)};
     };
   };
 
