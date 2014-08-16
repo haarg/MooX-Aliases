@@ -1,5 +1,9 @@
 Revision history for MooX::Aliases
 
+  - fix compatibility with perl 5.6
+  - list perl prerequisite in metadata
+  - include correct developer prerequisites
+
 0.001001 - 2014-05-25
   - fix compatibility with namespace::clean
 
