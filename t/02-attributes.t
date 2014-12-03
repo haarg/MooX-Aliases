@@ -29,7 +29,7 @@ my ($foo_called, $baz_called, $override_called);
     use MooX::Aliases;
 
     extends qw(MyTest);
-    has +foo => (
+    has '+foo' => (
         is      => 'rw',
         alias   => 'override',
         trigger => sub { $override_called++ },

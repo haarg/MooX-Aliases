@@ -22,7 +22,7 @@ use Test::More;
     use MooX::Aliases;
 
     extends qw(MyTest);
-    has +foo => (
+    has '+foo' => (
         is      => 'rw',
         alias   => 'override',
     );
