@@ -16,6 +16,7 @@ sub import {
 
   my $make_alias = sub {
     my ($from, $to) = @_;
+
     if (!$target->can($to)) {
       croak "Cannot find method $to to alias";
     }
@@ -36,6 +37,7 @@ sub import {
   install_modifier $target, 'around', 'has', sub {
     my $orig = shift;
     my ($attr, %opts) = @_;
+    $attr =~ s/^\+//;
 
     my $aliases = delete $opts{alias};
     return $orig->($attr, %opts)

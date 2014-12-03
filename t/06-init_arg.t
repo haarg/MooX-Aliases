@@ -16,6 +16,16 @@ use Test::More;
         init_arg => undef,
         alias    => ['quux'],
     );
+
+    package MyTest::Sub;
+    use Moo;
+    use MooX::Aliases;
+
+    extends qw(MyTest);
+    has '+foo' => (
+        is      => 'rw',
+        alias   => 'override',
+    );
 }
 
 my $test1 = MyTest->new(foo => 'foo', baz => 'baz');
@@ -45,5 +55,8 @@ is($test2->quux, 'baz',
 $test2->quux('quux');
 is($test2->baz, 'quux', 'Attribute set with aliased writer');
 is($test2->quux, 'quux', 'Attribute set with aliased writer');
+
+my $test3 = MyTest::Sub->new(override => 'over');
+is($test3->override, 'over', 'Overriden attribute set with aliased writer');
 
 done_testing;
