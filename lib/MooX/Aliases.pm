@@ -16,7 +16,6 @@ sub import {
 
   my $make_alias = sub {
     my ($from, $to) = @_;
-    $to =~ s/^\+//;
 
     if (!$target->can($to)) {
       croak "Cannot find method $to to alias";
