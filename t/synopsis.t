@@ -1,9 +1,5 @@
 use strictures 1;
 use Test::More;
-BEGIN {
-    eval "use Test::Output;";
-    plan skip_all => "Test::Output is required for this test" if $@;
-}
 
 package MyApp;
 use Moo;
@@ -41,7 +37,17 @@ my $o2 = MyApp::Role::Test->new();
 $o2->this('Hello World');
 
 package main;
-stdout_is { $o->bar } "Hello World", "correct output";
-stdout_is { $o2->bar } "Hello World", "correct output";
+{
+  local *STDOUT;
+  open STDOUT, '>', \(my $out = '');
+  $o->bar;
+  is $out, "Hello World", "correct output";
+}
+{
+  local *STDOUT;
+  open STDOUT, '>', \(my $out = '');
+  $o2->bar;
+  is $out, "Hello World", "correct output";
+}
 
 done_testing;
