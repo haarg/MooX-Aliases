@@ -175,6 +175,8 @@ haarg - Graham Knop (cpan:HAARG) <haarg@haarg.org>
 
 =item * Yuval Kogman <nothingmuch@woobling.org>
 
+=item * Daniel Gempesaw <gempesaw@gmail.com>
+
 =back
 
 =head1 COPYRIGHT
