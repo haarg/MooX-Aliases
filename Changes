@@ -1,5 +1,6 @@
 Revision history for MooX::Aliases
 
+0.001003 - 2014-12-07
   - fix aliases being added in +attribute overrides (GH#1)
 
 0.001002 - 2014-08-16
