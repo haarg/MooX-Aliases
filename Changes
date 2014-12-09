@@ -1,5 +1,6 @@
 Revision history for MooX::Aliases
 
+0.001004 - 2014-12-09
   - remove synopsis test, as it is redundant and annoying to test
 
 0.001003 - 2014-12-07
