@@ -35,11 +35,12 @@ sub import {
   my %init_args;
   install_modifier $target, 'around', 'has', sub {
     my $orig = shift;
-    my ($attr, %opts) = @_;
+    my ($attr_proto, %opts) = @_;
+    my $attr = $attr_proto;
     $attr =~ s/^\+//;
 
     my $aliases = delete $opts{alias};
-    return $orig->($attr, %opts)
+    return $orig->($attr_proto, %opts)
       unless $aliases;
 
     $aliases = [ $aliases ]
@@ -52,7 +53,7 @@ sub import {
     }
     $init_args{$name} = \@names;
 
-    my $out = $orig->($attr, %opts);
+    my $out = $orig->($attr_proto, %opts);
 
     for my $alias (@$aliases) {
       $make_alias->($alias => $attr);
