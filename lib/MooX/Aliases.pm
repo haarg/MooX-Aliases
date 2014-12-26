@@ -36,12 +36,22 @@ sub import {
   install_modifier $target, 'around', 'has', sub {
     my $orig = shift;
     my ($attr_proto, %opts) = @_;
-    my $attr = $attr_proto;
-    $attr =~ s/^\+//;
 
     my $aliases = delete $opts{alias};
     return $orig->($attr_proto, %opts)
       unless $aliases;
+
+    my $attr_ref = ref $attr_proto;
+
+    if ($attr_ref eq 'ARRAY') {
+        croak "Cannot alias list of attributes";
+    }
+
+    return $orig->($attr_proto, %opts)
+      if $attr_ref;
+
+    my $attr = $attr_proto;
+    $attr =~ s/^\+//;
 
     $aliases = [ $aliases ]
       if !ref $aliases;
