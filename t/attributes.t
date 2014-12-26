@@ -1,5 +1,6 @@
 use strictures 1;
 use Test::More;
+use Test::Fatal;
 
 my ($foo_called, $baz_called, $override_called);
 
@@ -23,6 +24,14 @@ my ($foo_called, $baz_called, $override_called);
     has wark => (
         is      => 'rw',
     );
+
+    ::like( ::exception {
+        has [qw(attr1 attr2)] => (
+            is    => 'rw',
+            alias => 'attr3',
+        );
+    }, qr/^Cannot make alias to list of attributes/,
+        "aliasing a list of attributes fails");
 
     package MyTest::Sub;
     use Moo;
