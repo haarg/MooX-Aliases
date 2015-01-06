@@ -33,6 +33,21 @@ my ($foo_called, $baz_called, $override_called);
     }, qr/^Cannot make alias to list of attributes/,
         "aliasing a list of attributes fails");
 
+    ::is( ::exception {
+        has [qw(attr4 attr5)] => (
+            is    => 'rw',
+        );
+    }, undef,
+        "creating a list of attributes without aliases works");
+
+    ::is( ::exception {
+        has [qw(attr6)] => (
+            is    => 'rw',
+            alias => 'attr7',
+        );
+    }, undef,
+        "aliasing a list of one attribute works");
+
     package MyTest::Sub;
     use Moo;
     use MooX::Aliases;
