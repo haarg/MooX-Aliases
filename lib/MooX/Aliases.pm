@@ -183,6 +183,8 @@ haarg - Graham Knop (cpan:HAARG) <haarg@haarg.org>
 
 =item * Daniel Gempesaw <gempesaw@gmail.com>
 
+=item * Denis Ibaev <dionys@gmail.com>
+
 =back
 
 =head1 COPYRIGHT
