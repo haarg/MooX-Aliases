@@ -1,5 +1,8 @@
 Revision history for MooX::Aliases
 
+  - fix +attribute overrides
+  - fix multi-attribute definitions
+
 0.001004 - 2014-12-09
   - remove synopsis test, as it is redundant and annoying to test
 
