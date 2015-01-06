@@ -36,7 +36,6 @@ sub import {
   install_modifier $target, 'around', 'has', sub {
     my $orig = shift;
     my ($attr, %opts) = @_;
-    $attr =~ s/^\+//;
 
     my $aliases = delete $opts{alias};
     return $orig->($attr, %opts)
@@ -45,7 +44,10 @@ sub import {
     $aliases = [ $aliases ]
       if !ref $aliases;
 
-    my $name = defined $opts{init_arg} ? $opts{init_arg} : $attr;
+    my $attr_name = $attr;
+    $attr_name =~ s/^\+//;
+
+    my $name = defined $opts{init_arg} ? $opts{init_arg} : $attr_name;
     my @names = @$aliases;
     if (!exists $opts{init_arg} || defined $opts{init_arg}) {
       unshift @names, $name;
@@ -55,7 +57,7 @@ sub import {
     my $out = $orig->($attr, %opts);
 
     for my $alias (@$aliases) {
-      $make_alias->($alias => $attr);
+      $make_alias->($alias => $attr_name);
     }
 
     if (!$installed_buildargs) {
