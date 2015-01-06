@@ -48,6 +48,14 @@ my ($foo_called, $baz_called, $override_called);
     }, undef,
         "aliasing a list of one attribute works");
 
+    ::is( ::exception {
+        has [qw(attr8 attr9)] => (
+            is    => 'rw',
+            alias => [],
+        );
+    }, undef,
+        "multiple attributes with an empty list of aliases works");
+
     package MyTest::Sub;
     use Moo;
     use MooX::Aliases;

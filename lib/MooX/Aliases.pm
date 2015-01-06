@@ -38,11 +38,11 @@ sub import {
     my ($attr, %opts) = @_;
 
     my $aliases = delete $opts{alias};
-    return $orig->($attr, %opts)
-      unless $aliases;
-
     $aliases = [ $aliases ]
-      if !ref $aliases;
+      if $aliases && !ref $aliases;
+
+    return $orig->($attr, %opts)
+      unless $aliases && @$aliases;
 
     my $attr_name
       = !ref $attr     ? $attr
