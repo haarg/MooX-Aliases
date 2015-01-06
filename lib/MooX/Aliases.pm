@@ -44,7 +44,11 @@ sub import {
     $aliases = [ $aliases ]
       if !ref $aliases;
 
-    my $attr_name = $attr;
+    my $attr_name
+      = !ref $attr     ? $attr
+      : @{$attr} == 1  ? $attr->[0]
+      : croak "Cannot make alias to list of attributes";
+
     $attr_name =~ s/^\+//;
 
     my $name = defined $opts{init_arg} ? $opts{init_arg} : $attr_name;
