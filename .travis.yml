@@ -15,6 +15,7 @@ matrix:
 before_install:
   - eval $(curl https://travis-perl.github.io/init)
   - setup-auto
+sudo: false
 branches:
   except:
     - /^wip\//
