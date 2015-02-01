@@ -20,10 +20,12 @@ sub import {
       croak "Cannot find method $to to alias";
     }
 
-    no strict 'refs';
-    *{"${target}::${from}"} = sub {
-      goto &{$_[0]->can($to)};
-    };
+    eval qq{
+      sub ${target}::${from} {
+        goto &{\$_[0]->can("$to")};
+      };
+      1;
+    } or die "$@";
   };
 
   {

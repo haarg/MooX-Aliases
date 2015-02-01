@@ -19,6 +19,8 @@ my %META = (
     develop   => { requires => {
       'Moose' => 0,
       'namespace::clean' => 0,
+      'namespace::autoclean' => 0,
+      'Test::CleanNamespaces' => 0,
     } },
   },
   resources => {
