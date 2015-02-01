@@ -1,5 +1,6 @@
 Revision history for MooX::Aliases
 
+0.001006 - 2015-02-01
   - name alias methods to avoid them getting autocleaned or detected by
     Test::CleanNamespaces (RT#101814)
 
